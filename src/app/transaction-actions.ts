@@ -26,6 +26,20 @@ export async function addTransaction(formData: FormData) {
     redirect(`/?error=${encodeURIComponent("กรอกข้อมูลไม่ครบ")}`);
   }
 
+  let receiptUrl: string | null = null;
+  const receipt = formData.get("receipt");
+  if (receipt instanceof File && receipt.size > 0) {
+    const path = `${household.id}/${crypto.randomUUID()}-${receipt.name}`;
+    const { error: uploadError } = await supabase.storage
+      .from("receipts")
+      .upload(path, receipt, { contentType: receipt.type });
+
+    if (uploadError) {
+      redirect(`/?error=${encodeURIComponent(uploadError.message)}`);
+    }
+    receiptUrl = path;
+  }
+
   const { error } = await supabase.from("transactions").insert({
     household_id: household.id,
     category_id: categoryId,
@@ -34,6 +48,7 @@ export async function addTransaction(formData: FormData) {
     amount,
     occurred_on: occurredOn,
     note,
+    receipt_url: receiptUrl,
   });
 
   if (error) {

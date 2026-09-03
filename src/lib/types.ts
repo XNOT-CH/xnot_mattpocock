@@ -27,3 +27,22 @@ export type Household = {
   name: string;
   created_at: string;
 };
+
+export type RecurringReminder = {
+  id: string;
+  household_id: string;
+  category_id: string;
+  type: TransactionType;
+  amount: number | null;
+  label: string;
+  day_of_month: number;
+  is_active: boolean;
+};
+
+export type Budget = {
+  id: string;
+  household_id: string;
+  category_id: string;
+  month: string;
+  amount: number;
+};

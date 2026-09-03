@@ -36,11 +36,19 @@ export async function joinHousehold(formData: FormData) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const token = String(formData.get("token") ?? "").trim();
-  if (!token)
+  const rawInput = String(formData.get("token") ?? "").trim();
+  if (!rawInput)
     redirect(
       `/onboarding?error=${encodeURIComponent("กรุณากรอกลิงก์เชิญ")}`,
     );
+
+  let token = rawInput;
+  try {
+    const url = new URL(rawInput);
+    token = url.searchParams.get("token") ?? rawInput;
+  } catch {
+    // not a URL, treat the input as a raw token
+  }
 
   const { data: invite, error: inviteError } = await supabase
     .from("household_invites")

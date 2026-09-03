@@ -1,3 +1,4 @@
+import { errorBanner, heading, infoBanner, input, primaryButton, secondaryButton } from "@/lib/ui";
 import { signIn, signUp } from "./actions";
 
 export default async function LoginPage({
@@ -9,51 +10,37 @@ export default async function LoginPage({
 
   return (
     <div className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 px-4">
-      <h1 className="text-2xl font-semibold">บัญชีรายรับรายจ่ายครอบครัว</h1>
+      <div className="text-center">
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-xl text-white">
+          ฿
+        </div>
+        <h1 className={heading}>บัญชีรายรับรายจ่ายครอบครัว</h1>
+      </div>
 
-      {message && (
-        <p className="rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-700">
-          {message}
-        </p>
-      )}
-      {error && (
-        <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-          {error}
-        </p>
-      )}
+      {message && <p className={infoBanner}>{message}</p>}
+      {error && <p className={errorBanner}>{error}</p>}
 
-      <form className="flex flex-col gap-3">
-        <label className="flex flex-col gap-1 text-sm">
+      <form className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60">
+        <label className="flex flex-col gap-1 text-sm text-slate-600">
           อีเมล
-          <input
-            name="email"
-            type="email"
-            required
-            className="rounded-md border px-3 py-2"
-          />
+          <input name="email" type="email" required className={input} />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="flex flex-col gap-1 text-sm text-slate-600">
           รหัสผ่าน
           <input
             name="password"
             type="password"
             required
             minLength={6}
-            className="rounded-md border px-3 py-2"
+            className={input}
           />
         </label>
 
         <div className="mt-2 flex gap-2">
-          <button
-            formAction={signIn}
-            className="flex-1 rounded-md bg-black px-3 py-2 text-sm font-medium text-white"
-          >
+          <button formAction={signIn} className={`flex-1 ${primaryButton}`}>
             เข้าสู่ระบบ
           </button>
-          <button
-            formAction={signUp}
-            className="flex-1 rounded-md border px-3 py-2 text-sm font-medium"
-          >
+          <button formAction={signUp} className={`flex-1 ${secondaryButton}`}>
             สมัครสมาชิก
           </button>
         </div>
