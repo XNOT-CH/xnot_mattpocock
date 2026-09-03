@@ -22,6 +22,12 @@ export default async function BudgetsPage({
   if (!household) redirect("/onboarding");
 
   const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
   const monthStart = currentMonthStart();
 
   const [{ data: categories }, { data: budgets }, spendByCategory] =
@@ -36,8 +42,9 @@ export default async function BudgetsPage({
         .from("budgets")
         .select("*")
         .eq("household_id", household.id)
+        .eq("user_id", user.id)
         .eq("month", monthStart),
-      getMonthlySpendByCategory(household.id, monthStart),
+      getMonthlySpendByCategory(household.id, monthStart, user.id),
     ]);
 
   const typedCategories = (categories ?? []) as Category[];
@@ -51,7 +58,7 @@ export default async function BudgetsPage({
       <header className="flex items-center justify-between">
         <div>
           <h1 className={heading}>งบประมาณ</h1>
-          <p className={subheading}>ตั้งงบรายเดือนแยกตามหมวดหมู่</p>
+          <p className={subheading}>งบส่วนตัวของคุณ แยกตามหมวดหมู่</p>
         </div>
         <Link href="/" className={`text-sm ${link}`}>
           กลับหน้าหลัก
@@ -70,7 +77,7 @@ export default async function BudgetsPage({
 
           return (
             <li key={category.id} className={card}>
-              <div className="mb-2 flex items-center justify-between">
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                 <p className="font-medium text-slate-900">{category.name}</p>
                 <p className="text-xs text-slate-500">
                   ใช้ไป {formatBaht(spent)}

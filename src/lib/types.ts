@@ -42,6 +42,7 @@ export type RecurringReminder = {
 export type Budget = {
   id: string;
   household_id: string;
+  user_id: string;
   category_id: string;
   month: string;
   amount: number;

@@ -9,6 +9,7 @@ export function currentMonthStart(): string {
 export async function getMonthlySpendByCategory(
   householdId: string,
   monthStart: string,
+  userId: string,
 ): Promise<Map<string, number>> {
   const supabase = await createClient();
 
@@ -16,6 +17,7 @@ export async function getMonthlySpendByCategory(
     .from("transactions")
     .select("category_id, amount")
     .eq("household_id", householdId)
+    .eq("user_id", userId)
     .eq("type", "expense")
     .gte("occurred_on", monthStart);
 

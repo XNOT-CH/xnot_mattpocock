@@ -110,19 +110,19 @@ export default async function RecurringPage({
             <li className="p-4 text-sm text-slate-500">ยังไม่มีรายการเตือน</li>
           )}
           {typedReminders.map((r) => (
-            <li key={r.id} className="flex items-center justify-between p-3 text-sm">
-              <div>
+            <li key={r.id} className="flex items-center justify-between gap-3 p-3 text-sm">
+              <div className="min-w-0 flex-1">
                 <p
-                  className={`font-medium ${r.is_active ? "text-slate-900" : "text-slate-400 line-through"}`}
+                  className={`truncate font-medium ${r.is_active ? "text-slate-900" : "text-slate-400 line-through"}`}
                 >
                   {r.label}
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="truncate text-xs text-slate-500">
                   ทุกวันที่ {r.day_of_month} · {categoryById.get(r.category_id)?.name ?? "-"}
                   {r.amount ? ` · ${Number(r.amount).toLocaleString("th-TH")} บาท` : ""}
                 </p>
               </div>
-              <form>
+              <form className="shrink-0">
                 <input type="hidden" name="id" value={r.id} />
                 <input type="hidden" name="is_active" value={String(r.is_active)} />
                 <button

@@ -138,7 +138,7 @@ export default async function MembersPage({
                 key={invite.id}
                 className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs"
               >
-                <code className="truncate text-slate-700">{inviteUrl}</code>
+                <code className="min-w-0 flex-1 truncate text-slate-700">{inviteUrl}</code>
                 <div className="flex shrink-0 items-center gap-3">
                   <CopyInviteLink url={inviteUrl} />
                   <form>

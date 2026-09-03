@@ -28,11 +28,12 @@ export async function setBudget(formData: FormData) {
   const { error } = await supabase.from("budgets").upsert(
     {
       household_id: household.id,
+      user_id: user.id,
       category_id: categoryId,
       month: currentMonthStart(),
       amount,
     },
-    { onConflict: "household_id,category_id,month" },
+    { onConflict: "household_id,user_id,category_id,month" },
   );
 
   if (error) {

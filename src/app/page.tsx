@@ -36,6 +36,11 @@ export default async function Home({
 
   const supabase = await createClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
   const monthStartStr = currentMonthStart();
 
   const [
@@ -55,6 +60,7 @@ export default async function Home({
       .from("transactions")
       .select("*")
       .eq("household_id", household.id)
+      .eq("user_id", user.id)
       .gte("occurred_on", monthStartStr)
       .order("occurred_on", { ascending: false })
       .limit(20),
@@ -62,8 +68,9 @@ export default async function Home({
       .from("budgets")
       .select("*")
       .eq("household_id", household.id)
+      .eq("user_id", user.id)
       .eq("month", monthStartStr),
-    getMonthlySpendByCategory(household.id, monthStartStr),
+    getMonthlySpendByCategory(household.id, monthStartStr, user.id),
     supabase
       .from("recurring_reminders")
       .select("*")
@@ -120,12 +127,12 @@ export default async function Home({
 
   return (
     <div className={pageWrap}>
-      <header className="flex items-start justify-between">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className={heading}>{household.name}</h1>
-          <p className={subheading}>สรุปเดือนนี้</p>
+          <p className={subheading}>สรุปเดือนนี้ (ของคุณ)</p>
         </div>
-        <nav className="flex flex-wrap justify-end gap-x-3 gap-y-1 text-sm">
+        <nav className="flex flex-wrap gap-x-3 gap-y-1 text-sm sm:justify-end">
           <Link href="/reports" className={link}>
             รายงาน
           </Link>
@@ -170,7 +177,9 @@ export default async function Home({
               key={r.id}
               className={`flex items-center justify-between gap-3 ${infoBanner}`}
             >
-              <span>อย่าลืมกรอกรายการ &quot;{r.label}&quot; ของเดือนนี้</span>
+              <span className="min-w-0 flex-1 truncate">
+                อย่าลืมกรอกรายการ &quot;{r.label}&quot; ของเดือนนี้
+              </span>
               <input type="hidden" name="type" value={r.type} />
               <input type="hidden" name="category_id" value={r.category_id} />
               <input
@@ -201,22 +210,22 @@ export default async function Home({
         </section>
       )}
 
-      <section className="grid grid-cols-3 gap-3 text-center">
+      <section className="grid grid-cols-3 gap-2 text-center sm:gap-3">
         <div className={card}>
           <p className="text-xs text-slate-500">รายรับ</p>
-          <p className="text-lg font-semibold text-emerald-600">
+          <p className="text-base font-semibold text-emerald-600 sm:text-lg">
             {formatBaht(income)}
           </p>
         </div>
         <div className={card}>
           <p className="text-xs text-slate-500">รายจ่าย</p>
-          <p className="text-lg font-semibold text-rose-600">
+          <p className="text-base font-semibold text-rose-600 sm:text-lg">
             {formatBaht(expense)}
           </p>
         </div>
         <div className={card}>
           <p className="text-xs text-slate-500">คงเหลือ</p>
-          <p className="text-lg font-semibold text-slate-900">
+          <p className="text-base font-semibold text-slate-900 sm:text-lg">
             {formatBaht(income - expense)}
           </p>
         </div>
@@ -279,12 +288,12 @@ export default async function Home({
             <li className="p-4 text-sm text-slate-500">ยังไม่มีรายการเดือนนี้</li>
           )}
           {typedTransactions.map((t) => (
-            <li key={t.id} className="flex items-center justify-between p-3 text-sm">
-              <div>
-                <p className="font-medium text-slate-900">
+            <li key={t.id} className="flex items-center justify-between gap-3 p-3 text-sm">
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-medium text-slate-900">
                   {categoryById.get(t.category_id)?.name ?? "ไม่ระบุหมวดหมู่"}
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="truncate text-xs text-slate-500">
                   {t.occurred_on}
                   {t.note ? ` · ${t.note}` : ""}
                   {receiptUrlByTransaction.get(t.id) && (
@@ -305,8 +314,8 @@ export default async function Home({
               <p
                 className={
                   t.type === "income"
-                    ? "font-medium text-emerald-600"
-                    : "font-medium text-rose-600"
+                    ? "shrink-0 font-medium text-emerald-600"
+                    : "shrink-0 font-medium text-rose-600"
                 }
               >
                 {t.type === "income" ? "+" : "-"}
