@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getSessionUser } from "@/lib/supabase/server";
 import { getCurrentHousehold } from "@/lib/household";
 import { currentMonthStart, getMonthlySpendByCategory } from "@/lib/budgets";
 import type { Budget, Category, RecurringReminder, Transaction } from "@/lib/types";
@@ -36,9 +36,7 @@ export default async function Home({
 
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getSessionUser(supabase);
   if (!user) redirect("/login");
 
   const monthStartStr = currentMonthStart();

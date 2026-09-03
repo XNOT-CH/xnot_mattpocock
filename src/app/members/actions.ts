@@ -2,15 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getSessionUser } from "@/lib/supabase/server";
 import { getCurrentHousehold } from "@/lib/household";
 
 export async function updateDisplayName(formData: FormData) {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getSessionUser(supabase);
   if (!user) redirect("/login");
 
   const household = await getCurrentHousehold();
@@ -25,7 +23,7 @@ export async function updateDisplayName(formData: FormData) {
     .from("household_members")
     .update({ display_name: displayName })
     .eq("household_id", household.id)
-    .eq("user_id", user!.id);
+    .eq("user_id", user.id);
 
   if (error) {
     redirect(`/members?error=${encodeURIComponent(error.message)}`);
@@ -38,9 +36,7 @@ export async function updateDisplayName(formData: FormData) {
 export async function createInvite() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getSessionUser(supabase);
   if (!user) redirect("/login");
 
   const household = await getCurrentHousehold();
@@ -48,7 +44,7 @@ export async function createInvite() {
 
   const { error } = await supabase
     .from("household_invites")
-    .insert({ household_id: household.id, created_by: user!.id });
+    .insert({ household_id: household.id, created_by: user.id });
 
   if (error) {
     redirect(`/members?error=${encodeURIComponent(error.message)}`);

@@ -26,3 +26,16 @@ export async function createClient() {
     },
   );
 }
+
+// The middleware already calls auth.getUser() (a network round trip to
+// Supabase) to verify the session on every matched request. Downstream code
+// in the same request can trust that cookie and read it locally instead of
+// paying for a second round trip.
+export async function getSessionUser(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+) {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  return session?.user ?? null;
+}

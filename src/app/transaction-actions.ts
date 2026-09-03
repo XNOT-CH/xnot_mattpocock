@@ -2,15 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getSessionUser } from "@/lib/supabase/server";
 import { getCurrentHousehold } from "@/lib/household";
 
 export async function addTransaction(formData: FormData) {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getSessionUser(supabase);
   if (!user) redirect("/login");
 
   const household = await getCurrentHousehold();
@@ -43,7 +41,7 @@ export async function addTransaction(formData: FormData) {
   const { error } = await supabase.from("transactions").insert({
     household_id: household.id,
     category_id: categoryId,
-    user_id: user!.id,
+    user_id: user.id,
     type,
     amount,
     occurred_on: occurredOn,
