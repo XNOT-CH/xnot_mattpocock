@@ -34,3 +34,9 @@ export async function signUp(formData: FormData) {
     `/login?message=${encodeURIComponent("ตรวจสอบอีเมลเพื่อยืนยันบัญชี")}`,
   );
 }
+
+export async function signOut() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect("/login");
+}

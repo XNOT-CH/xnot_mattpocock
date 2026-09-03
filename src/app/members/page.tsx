@@ -15,6 +15,7 @@ import {
   subheading,
 } from "@/lib/ui";
 import { createInvite, revokeInvite, updateDisplayName } from "./actions";
+import { CopyInviteLink } from "./copy-invite-link";
 
 type Member = {
   user_id: string;
@@ -130,25 +131,29 @@ export default async function MembersPage({
           {typedInvites.length === 0 && (
             <li className="text-sm text-slate-500">ยังไม่มีลิงก์เชิญ</li>
           )}
-          {typedInvites.map((invite) => (
-            <li
-              key={invite.id}
-              className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs"
-            >
-              <code className="truncate text-slate-700">
-                {origin}/onboarding?token={invite.token}
-              </code>
-              <form className="shrink-0">
-                <input type="hidden" name="id" value={invite.id} />
-                <button
-                  formAction={revokeInvite}
-                  className="font-medium text-rose-600 hover:text-rose-700"
-                >
-                  ยกเลิก
-                </button>
-              </form>
-            </li>
-          ))}
+          {typedInvites.map((invite) => {
+            const inviteUrl = `${origin}/onboarding?token=${invite.token}`;
+            return (
+              <li
+                key={invite.id}
+                className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs"
+              >
+                <code className="truncate text-slate-700">{inviteUrl}</code>
+                <div className="flex shrink-0 items-center gap-3">
+                  <CopyInviteLink url={inviteUrl} />
+                  <form>
+                    <input type="hidden" name="id" value={invite.id} />
+                    <button
+                      formAction={revokeInvite}
+                      className="font-medium text-rose-600 hover:text-rose-700"
+                    >
+                      ยกเลิก
+                    </button>
+                  </form>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </section>
     </div>

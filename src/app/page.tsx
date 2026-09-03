@@ -17,6 +17,7 @@ import {
   subheading,
   warnBanner,
 } from "@/lib/ui";
+import { signOut } from "./login/actions";
 import { addTransaction } from "./transaction-actions";
 
 function formatBaht(amount: number) {
@@ -137,6 +138,11 @@ export default async function Home({
           <Link href="/members" className={link}>
             สมาชิก
           </Link>
+          <form>
+            <button formAction={signOut} className="text-slate-400 hover:text-rose-600">
+              ออกจากระบบ
+            </button>
+          </form>
         </nav>
       </header>
 
