@@ -27,6 +27,13 @@ const PIE_COLORS = [
   "#ea580c",
 ];
 
+// Tooltip content is HTML, so it can read the theme's CSS variables directly.
+const tooltipStyle = {
+  background: "var(--surface)",
+  borderColor: "var(--border)",
+  color: "var(--foreground)",
+};
+
 function formatBaht(amount: number) {
   return amount.toLocaleString("th-TH", { minimumFractionDigits: 0 });
 }
@@ -37,7 +44,7 @@ export function ExpenseByCategoryPie({
   data: { name: string; value: number }[];
 }) {
   if (data.length === 0) {
-    return <p className="text-sm text-slate-500">ยังไม่มีรายจ่ายเดือนนี้</p>;
+    return <p className="text-sm text-slate-500 dark:text-slate-400">ยังไม่มีรายจ่ายเดือนนี้</p>;
   }
 
   return (
@@ -56,7 +63,7 @@ export function ExpenseByCategoryPie({
             <Cell key={entry.name} fill={PIE_COLORS[i % PIE_COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip formatter={(value) => formatBaht(Number(value))} />
+        <Tooltip contentStyle={tooltipStyle} formatter={(value) => formatBaht(Number(value))} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -68,24 +75,30 @@ export function MonthlyTrendBar({
   data: { month: string; รายรับ: number; รายจ่าย: number }[];
 }) {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={data} margin={{ bottom: 16 }}>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-        <XAxis
-          dataKey="month"
-          fontSize={12}
-          interval={0}
-          angle={-35}
-          textAnchor="end"
-          height={40}
-          tick={{ fill: "#64748b" }}
-        />
-        <YAxis fontSize={12} tickFormatter={formatBaht} tick={{ fill: "#64748b" }} />
-        <Tooltip formatter={(value) => formatBaht(Number(value))} />
-        <Legend />
-        <Bar dataKey="รายรับ" fill="#059669" />
-        <Bar dataKey="รายจ่าย" fill="#e11d48" />
-      </BarChart>
-    </ResponsiveContainer>
+    <div className="text-slate-500 dark:text-slate-400">
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={data} margin={{ bottom: 16 }}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" strokeOpacity={0.25} />
+          <XAxis
+            dataKey="month"
+            fontSize={12}
+            interval={0}
+            angle={-35}
+            textAnchor="end"
+            height={40}
+            tick={{ fill: "currentColor" }}
+          />
+          <YAxis fontSize={12} tickFormatter={formatBaht} tick={{ fill: "currentColor" }} />
+          <Tooltip
+            contentStyle={tooltipStyle}
+            cursor={{ fill: "currentColor", fillOpacity: 0.1 }}
+            formatter={(value) => formatBaht(Number(value))}
+          />
+          <Legend />
+          <Bar dataKey="รายรับ" fill="#059669" />
+          <Bar dataKey="รายจ่าย" fill="#e11d48" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 }

@@ -11,7 +11,7 @@ export function UserFilter({
 }) {
   return (
     <form className="flex items-center gap-2 text-sm">
-      <label htmlFor="user" className="text-slate-500">
+      <label htmlFor="user" className="text-slate-500 dark:text-slate-400">
         ดูรายการของ
       </label>
       <select

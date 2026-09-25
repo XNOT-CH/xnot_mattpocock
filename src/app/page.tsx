@@ -144,7 +144,7 @@ export default async function Home({
             สมาชิก
           </Link>
           <form>
-            <button formAction={signOut} className="text-slate-400 hover:text-rose-600">
+            <button formAction={signOut} className="text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400">
               ออกจากระบบ
             </button>
           </form>
@@ -210,20 +210,20 @@ export default async function Home({
 
       <section className="grid grid-cols-3 gap-2 text-center sm:gap-3">
         <div className={card}>
-          <p className="text-xs text-slate-500">รายรับ</p>
-          <p className="text-base font-semibold text-emerald-600 sm:text-lg">
+          <p className="text-xs text-slate-500 dark:text-slate-400">รายรับ</p>
+          <p className="text-base font-semibold text-emerald-600 dark:text-emerald-400 sm:text-lg">
             {formatBaht(income)}
           </p>
         </div>
         <div className={card}>
-          <p className="text-xs text-slate-500">รายจ่าย</p>
-          <p className="text-base font-semibold text-rose-600 sm:text-lg">
+          <p className="text-xs text-slate-500 dark:text-slate-400">รายจ่าย</p>
+          <p className="text-base font-semibold text-rose-600 dark:text-rose-400 sm:text-lg">
             {formatBaht(expense)}
           </p>
         </div>
         <div className={card}>
-          <p className="text-xs text-slate-500">คงเหลือ</p>
-          <p className="text-base font-semibold text-slate-900 sm:text-lg">
+          <p className="text-xs text-slate-500 dark:text-slate-400">คงเหลือ</p>
+          <p className="text-base font-semibold text-slate-900 dark:text-slate-100 sm:text-lg">
             {formatBaht(income - expense)}
           </p>
         </div>
@@ -264,13 +264,13 @@ export default async function Home({
             placeholder="โน้ต (ไม่บังคับ)"
             className={`col-span-2 ${input}`}
           />
-          <label className="col-span-2 flex flex-col gap-1 text-xs text-slate-500">
+          <label className="col-span-2 flex flex-col gap-1 text-xs text-slate-500 dark:text-slate-400">
             แนบรูปใบเสร็จ (ไม่บังคับ)
             <input
               name="receipt"
               type="file"
               accept="image/*"
-              className={`${input} text-slate-900 file:mr-3 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-blue-700`}
+              className={`${input} text-slate-900 dark:text-slate-100 file:mr-3 file:rounded-md file:border-0 file:bg-blue-50 dark:file:bg-blue-950 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-blue-700 dark:file:text-blue-300`}
             />
           </label>
           <button formAction={addTransaction} className={`col-span-2 ${primaryButton}`}>
@@ -281,17 +281,17 @@ export default async function Home({
 
       <section>
         <h2 className={`mb-3 ${sectionLabel}`}>รายการล่าสุด</h2>
-        <ul className="flex flex-col divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-200/60">
+        <ul className="flex flex-col divide-y divide-slate-200 dark:divide-slate-800 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm shadow-slate-200/60 dark:shadow-none">
           {typedTransactions.length === 0 && (
-            <li className="p-4 text-sm text-slate-500">ยังไม่มีรายการเดือนนี้</li>
+            <li className="p-4 text-sm text-slate-500 dark:text-slate-400">ยังไม่มีรายการเดือนนี้</li>
           )}
           {typedTransactions.map((t) => (
             <li key={t.id} className="flex items-center justify-between gap-3 p-3 text-sm">
               <div className="min-w-0 flex-1">
-                <p className="truncate font-medium text-slate-900">
+                <p className="truncate font-medium text-slate-900 dark:text-slate-100">
                   {categoryById.get(t.category_id)?.name ?? "ไม่ระบุหมวดหมู่"}
                 </p>
-                <p className="truncate text-xs text-slate-500">
+                <p className="truncate text-xs text-slate-500 dark:text-slate-400">
                   {t.occurred_on}
                   {t.note ? ` · ${t.note}` : ""}
                   {receiptUrlByTransaction.get(t.id) && (
@@ -312,8 +312,8 @@ export default async function Home({
               <p
                 className={
                   t.type === "income"
-                    ? "shrink-0 font-medium text-emerald-600"
-                    : "shrink-0 font-medium text-rose-600"
+                    ? "shrink-0 font-medium text-emerald-600 dark:text-emerald-400"
+                    : "shrink-0 font-medium text-rose-600 dark:text-rose-400"
                 }
               >
                 {t.type === "income" ? "+" : "-"}

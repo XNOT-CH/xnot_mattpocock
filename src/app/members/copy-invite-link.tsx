@@ -15,7 +15,7 @@ export function CopyInviteLink({ url }: { url: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      className="shrink-0 font-medium text-blue-600 hover:text-blue-700"
+      className="shrink-0 font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
     >
       {copied ? "คัดลอกแล้ว" : "คัดลอก"}
     </button>

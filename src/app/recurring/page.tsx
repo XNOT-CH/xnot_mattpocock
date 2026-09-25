@@ -105,19 +105,19 @@ export default async function RecurringPage({
 
       <section>
         <h2 className={`mb-3 ${sectionLabel}`}>รายการทั้งหมด</h2>
-        <ul className="flex flex-col divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-200/60">
+        <ul className="flex flex-col divide-y divide-slate-200 dark:divide-slate-800 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm shadow-slate-200/60 dark:shadow-none">
           {typedReminders.length === 0 && (
-            <li className="p-4 text-sm text-slate-500">ยังไม่มีรายการเตือน</li>
+            <li className="p-4 text-sm text-slate-500 dark:text-slate-400">ยังไม่มีรายการเตือน</li>
           )}
           {typedReminders.map((r) => (
             <li key={r.id} className="flex items-center justify-between gap-3 p-3 text-sm">
               <div className="min-w-0 flex-1">
                 <p
-                  className={`truncate font-medium ${r.is_active ? "text-slate-900" : "text-slate-400 line-through"}`}
+                  className={`truncate font-medium ${r.is_active ? "text-slate-900 dark:text-slate-100" : "text-slate-400 dark:text-slate-500 line-through"}`}
                 >
                   {r.label}
                 </p>
-                <p className="truncate text-xs text-slate-500">
+                <p className="truncate text-xs text-slate-500 dark:text-slate-400">
                   ทุกวันที่ {r.day_of_month} · {categoryById.get(r.category_id)?.name ?? "-"}
                   {r.amount ? ` · ${Number(r.amount).toLocaleString("th-TH")} บาท` : ""}
                 </p>

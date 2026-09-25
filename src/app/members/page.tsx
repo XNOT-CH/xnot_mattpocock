@@ -97,14 +97,14 @@ export default async function MembersPage({
 
       <section>
         <h2 className={`mb-3 ${sectionLabel}`}>สมาชิกในบัญชี</h2>
-        <ul className="flex flex-col divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-200/60">
+        <ul className="flex flex-col divide-y divide-slate-200 dark:divide-slate-800 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm shadow-slate-200/60 dark:shadow-none">
           {typedMembers.map((m) => (
             <li key={m.user_id} className="flex items-center justify-between p-3 text-sm">
-              <p className="font-medium text-slate-900">
+              <p className="font-medium text-slate-900 dark:text-slate-100">
                 {m.display_name ?? "ไม่ระบุชื่อ"}
                 {m.user_id === user.id ? " (คุณ)" : ""}
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 เข้าร่วมเมื่อ {new Date(m.created_at).toLocaleDateString("th-TH")}
               </p>
             </li>
@@ -127,23 +127,23 @@ export default async function MembersPage({
 
         <ul className="flex flex-col gap-2">
           {typedInvites.length === 0 && (
-            <li className="text-sm text-slate-500">ยังไม่มีลิงก์เชิญ</li>
+            <li className="text-sm text-slate-500 dark:text-slate-400">ยังไม่มีลิงก์เชิญ</li>
           )}
           {typedInvites.map((invite) => {
             const inviteUrl = `${origin}/onboarding?token=${invite.token}`;
             return (
               <li
                 key={invite.id}
-                className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs"
+                className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs"
               >
-                <code className="min-w-0 flex-1 truncate text-slate-700">{inviteUrl}</code>
+                <code className="min-w-0 flex-1 truncate text-slate-700 dark:text-slate-300">{inviteUrl}</code>
                 <div className="flex shrink-0 items-center gap-3">
                   <CopyInviteLink url={inviteUrl} />
                   <form>
                     <input type="hidden" name="id" value={invite.id} />
                     <button
                       formAction={revokeInvite}
-                      className="font-medium text-rose-600 hover:text-rose-700"
+                      className="font-medium text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300"
                     >
                       ยกเลิก
                     </button>

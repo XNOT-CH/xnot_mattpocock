@@ -76,15 +76,15 @@ export default async function BudgetsPage({
           return (
             <li key={category.id} className={card}>
               <div className="mb-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-                <p className="font-medium text-slate-900">{category.name}</p>
-                <p className="text-xs text-slate-500">
+                <p className="font-medium text-slate-900 dark:text-slate-100">{category.name}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   ใช้ไป {formatBaht(spent)}
                   {budget > 0 ? ` / ${formatBaht(budget)}` : ""}
                 </p>
               </div>
 
               {budget > 0 && (
-                <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
                   <div
                     className={`h-full ${barColor}`}
                     style={{ width: `${Math.min(ratio, 1) * 100}%` }}

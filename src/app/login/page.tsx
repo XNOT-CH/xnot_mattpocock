@@ -20,12 +20,12 @@ export default async function LoginPage({
       {message && <p className={infoBanner}>{message}</p>}
       {error && <p className={errorBanner}>{error}</p>}
 
-      <form className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/60">
-        <label className="flex flex-col gap-1 text-sm text-slate-600">
+      <form className="flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm shadow-slate-200/60 dark:shadow-none">
+        <label className="flex flex-col gap-1 text-sm text-slate-600 dark:text-slate-400">
           อีเมล
           <input name="email" type="email" required className={input} />
         </label>
-        <label className="flex flex-col gap-1 text-sm text-slate-600">
+        <label className="flex flex-col gap-1 text-sm text-slate-600 dark:text-slate-400">
           รหัสผ่าน
           <input
             name="password"
